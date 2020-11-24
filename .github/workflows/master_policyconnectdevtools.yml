@@ -38,5 +38,5 @@ jobs:
         
     - name: Create an issue on failure
       if: failure()
-      run: curl -u sandesh2026:${{ MY_TOKEN }} -X POST https://api.github.com//repos/sandesh2026/DevOps-Hackathon/issues -d '{"title":"api failure"}'
+      run: curl -u sandesh2026:${{ MY_TOKEN }} -X POST https://api.github.com/repos/sandesh2026/DevOps-Hackathon/issues -d '{"title":"api failure"}'
   
