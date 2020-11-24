@@ -35,14 +35,9 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_909f501d58814ef091ef3e66174bfcd6 }}
         package: ${{env.DOTNET_ROOT}}/myapp 
+        
     - name: Create an issue on failure
-      if: failure()
-      uses: JasonEtco/create-an-issue@v2
+    - uses: JasonEtco/create-an-issue@v2
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-   
-    - name: Create an PR on success
-      if: success()
-      uses: nikhilaii93/pr-autobuild@master
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
