@@ -32,7 +32,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'policyconnectdevtools'
-        slot-name: 'production'
+        slot-name: 'development'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_909f501d58814ef091ef3e66174bfcd6 }}
         package: ${{env.DOTNET_ROOT}}/myapp 
     
