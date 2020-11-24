@@ -6,11 +6,11 @@ name: Build and deploy ASP.Net Core app to Azure Web App - policyconnectdevtools
 on:
   push:
     branches:
-      - master
+      - api
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@master
@@ -21,12 +21,12 @@ jobs:
         dotnet-version: '3.1.102'
 
     - name: Build with dotnet
-      working-directory: 'src/Contoso.WebApi/*'
+      working-directory: 'src/Contoso.WebApi/'
       run: dotnet build --configuration Release
 
     - name: dotnet publish
-      working-directory: 'src/Contoso.WebApi/*'
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      working-directory: 'src/Contoso.WebApi/'
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/PolicyConnectDevTools
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
@@ -34,11 +34,12 @@ jobs:
         app-name: 'policyconnectdevtools'
         slot-name: 'development'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_909f501d58814ef091ef3e66174bfcd6 }}
-        package: ${{env.DOTNET_ROOT}}/myapp 
-    
-    
+        package: ${{env.DOTNET_ROOT}}/PolicyConnectDevTools
+        
     - name: Create an issue on failure
       if: failure()
-      uses: JasonEtco/create-an-issue@v2
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      run: curl -u sandesh2026:${{ secrets.MY_TOKEN }} -X POST https://api.github.com/repos/sandesh2026/DevOps-Hackathon/issues -d '{"title":"api failure"}'
+    - name: Create a PR on success
+      if: success()
+      run: curl -u sandesh2026:${{ secrets.MY_TOKEN }} -X POST https://api.github.com/repos/sandesh2026/DevOps-Hackathon/pulls -d '{"title":"successful build", "head":"api", "base":"master"}'
+  
